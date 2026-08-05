@@ -1,28 +1,26 @@
 import { Oklch } from 'culori';
 export interface BasePalette {
-  blob0: Oklch;
-  blob1: Oklch;
-  blob2: Oklch;
+    blob0: Oklch;
+    blob1: Oklch;
+    blob2: Oklch;
 }
 export interface PaletteOptions {
-  shades?: [string, string, string];
-  hue?: number;
-  secondaryHue?: number;
+    shades?: [string, string, string];
+    hue?: number;
+    secondaryHue?: number;
 }
 /**
  * Resolves the three blob base colors, either from an explicit `shades` list
  * or generated from a base `hue` (and optional `secondaryHue` for spread).
  */
-export declare function resolveBasePalette(
-  options: PaletteOptions
-): BasePalette;
+export declare function resolveBasePalette(options: PaletteOptions): BasePalette;
 export interface DriftInput {
-  base: Oklch;
-  time: number;
-  hueShift: number;
-  intensity: number;
-  /** Per-blob offset so the three blobs don't drift in perfect unison. */
-  offset: number;
+    base: Oklch;
+    time: number;
+    hueShift: number;
+    intensity: number;
+    /** Per-blob offset so the three blobs don't drift in perfect unison. */
+    offset: number;
 }
 /**
  * Applies a slow oklch hue/lightness/chroma drift on top of a base color,

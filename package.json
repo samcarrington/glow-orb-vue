@@ -6,6 +6,23 @@
     "email": "sam@gwawr.co.uk"
   },
   "description": "A Vue 3 component reproducing the talk.deepgram.com molten-orb effect, with per-orb behavior and color individuality.",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "component",
+    "animation",
+    "glow",
+    "orb"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samcarrington/glow-orb-vue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/samcarrington/glow-orb-vue/issues"
+  },
+  "homepage": "https://github.com/samcarrington/glow-orb-vue#readme",
   "type": "module",
   "main": "./dist/glow-orb-vue.cjs",
   "module": "./dist/glow-orb-vue.js",
@@ -15,7 +32,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/glow-orb-vue.js",
       "require": "./dist/glow-orb-vue.cjs"
-    }
+    },
+    "./style.css": "./dist/glow-orb-vue.css"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "dist"

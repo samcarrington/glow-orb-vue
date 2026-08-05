@@ -48,13 +48,24 @@ const blob1El = ref<HTMLDivElement | null>(null);
 const blob2El = ref<HTMLDivElement | null>(null);
 const blobEls = [blob0El, blob1El, blob2El];
 
-const basePalette = computed(() =>
-  resolveBasePalette({
-    shades: props.shades,
-    hue: props.hue,
-    secondaryHue: props.secondaryHue,
-  })
-);
+const basePalette = computed(() => {
+  try {
+    return resolveBasePalette({
+      shades: props.shades,
+      hue: props.hue,
+      secondaryHue: props.secondaryHue,
+    });
+  } catch (error) {
+    console.warn(
+      '[GlowOrb] Invalid `shades`, falling back to hue-derived palette:',
+      error
+    );
+    return resolveBasePalette({
+      hue: props.hue,
+      secondaryHue: props.secondaryHue,
+    });
+  }
+});
 const paletteList = computed(() => [
   basePalette.value.blob0,
   basePalette.value.blob1,
@@ -68,52 +79,67 @@ let raf = 0;
 let lastTimestamp = 0;
 let elapsed = 0;
 let reduced = false;
+let lastComputedElapsed: number | null = null;
+let reducedMotionQuery: MediaQueryList | null = null;
+
+function updateReducedMotion(): void {
+  reduced = reducedMotionQuery?.matches ?? false;
+}
 
 function tick(now: number) {
   const dt = Math.min(0.05, (now - (lastTimestamp || now)) / 1000);
   lastTimestamp = now;
   if (!reduced) elapsed += dt;
 
-  blobEls.forEach((elRef, i) => {
-    const el = elRef.value;
-    if (!el) return;
+  // Once reduced motion has frozen `elapsed`, every frame recomputes the same
+  // values — skip the work once it's settled instead of redoing it at 60fps.
+  if (elapsed !== lastComputedElapsed) {
+    lastComputedElapsed = elapsed;
 
-    const frame = computeBlobFrame({
-      time: elapsed,
-      blobIndex: i,
-      excitement: props.excitement,
-      warp: props.warp,
-      phase: props.phase,
-      env: props.env,
+    blobEls.forEach((elRef, i) => {
+      const el = elRef.value;
+      if (!el) return;
+
+      const frame = computeBlobFrame({
+        time: elapsed,
+        blobIndex: i,
+        excitement: props.excitement,
+        warp: props.warp,
+        phase: props.phase,
+        env: props.env,
+      });
+
+      el.style.transform =
+        `translate(${frame.x.toFixed(2)}px, ${frame.y.toFixed(2)}px) ` +
+        `rotate(${frame.rotation.toFixed(2)}deg) scale(${frame.scaleX.toFixed(3)}, ${frame.scaleY.toFixed(3)})`;
+      el.style.borderRadius = frame.borderRadius;
+
+      const drifted = driftColor({
+        base: paletteList.value[i],
+        time: elapsed,
+        hueShift: props.hueShift,
+        intensity: props.intensity,
+        offset: i * 1.7,
+      });
+      el.style.background = formatOklch(drifted);
     });
-
-    el.style.transform =
-      `translate(${frame.x.toFixed(2)}px, ${frame.y.toFixed(2)}px) ` +
-      `rotate(${frame.rotation.toFixed(2)}deg) scale(${frame.scaleX.toFixed(3)}, ${frame.scaleY.toFixed(3)})`;
-    el.style.borderRadius = frame.borderRadius;
-
-    const drifted = driftColor({
-      base: paletteList.value[i],
-      time: elapsed,
-      hueShift: props.hueShift,
-      intensity: props.intensity,
-      offset: i * 1.7,
-    });
-    el.style.background = formatOklch(drifted);
-  });
+  }
 
   raf = requestAnimationFrame(tick);
 }
 
 onMounted(() => {
-  reduced =
-    typeof matchMedia !== 'undefined' &&
-    matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (typeof matchMedia !== 'undefined') {
+    reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
+    updateReducedMotion();
+    reducedMotionQuery.addEventListener('change', updateReducedMotion);
+  }
   raf = requestAnimationFrame(tick);
 });
 
 onUnmounted(() => {
   cancelAnimationFrame(raf);
+  reducedMotionQuery?.removeEventListener('change', updateReducedMotion);
 });
 </script>
 

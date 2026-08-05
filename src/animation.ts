@@ -47,10 +47,12 @@ export function computeBlobFrame(input: BlobFrameInput): BlobFrame {
   const scaleX = 1.1 + 0.3 * excitement * Math.sin(t * 0.47) + env * 0.08;
   const scaleY = 1.1 + 0.3 * excitement * Math.sin(t * 0.61 + 2.1) + env * 0.3;
 
-  const r1 = 50 + 22 * warp * Math.sin(t * 0.41);
-  const r2 = 50 + 22 * warp * Math.sin(t * 0.57 + 1.4);
-  const r3 = 50 + 22 * warp * Math.sin(t * 0.33 + 2.9);
-  const r4 = 50 + 22 * warp * Math.sin(t * 0.71 + 4.2);
+  // Clamped to [0, 100]: border-radius percentages outside that range are
+  // invalid CSS and browsers drop the whole declaration, not just the offending value.
+  const r1 = clamp(50 + 22 * warp * Math.sin(t * 0.41), 0, 100);
+  const r2 = clamp(50 + 22 * warp * Math.sin(t * 0.57 + 1.4), 0, 100);
+  const r3 = clamp(50 + 22 * warp * Math.sin(t * 0.33 + 2.9), 0, 100);
+  const r4 = clamp(50 + 22 * warp * Math.sin(t * 0.71 + 4.2), 0, 100);
 
   const borderRadius = `${r1}% ${100 - r1}% ${r2}% ${100 - r2}% / ${r3}% ${r4}% ${100 - r4}% ${100 - r3}%`;
 

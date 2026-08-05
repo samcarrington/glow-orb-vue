@@ -15,5 +15,5 @@ declare module 'culori' {
   export function converter(
     mode: 'oklch'
   ): (color: string | Record<string, unknown>) => Oklch | undefined;
-  export function formatRgb(color: Record<string, unknown>): string;
+  export function formatRgb(color: Record<string, unknown>): string | undefined;
 }

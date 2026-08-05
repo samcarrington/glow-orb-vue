@@ -101,5 +101,7 @@ export function formatOklch(color: Oklch): string {
 
 /** Derives a default glow color (used in the box-shadow) from a blob's base color. */
 export function deriveGlow(color: Oklch, alpha = 0.6): string {
-  return formatRgb({ ...color, alpha });
+  // formatRgb only returns undefined for unparseable input; a complete Oklch
+  // object is always valid, so this conversion cannot fail.
+  return formatRgb({ ...color, alpha }) as string;
 }

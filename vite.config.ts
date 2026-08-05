@@ -1,15 +1,13 @@
-import { fileURLToPath, URL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [vue(), dts({ include: ['src'], rollupTypes: true })],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
+  plugins: [
+    vue(),
+    dts({ include: ['src'], exclude: ['src/**/*.test.ts'], rollupTypes: true }),
+  ],
   build: {
     lib: {
       entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),

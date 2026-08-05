@@ -4,7 +4,8 @@ import { ref } from 'vue';
 
 interface OrbCardConfig {
   name: string;
-  hue: number;
+  hue?: number;
+  shades?: [string, string, string];
   excitement: number;
   warp: number;
   phase: number;
@@ -48,10 +49,31 @@ const cards: OrbCardConfig[] = [
     brandGlow: 'rgb(244, 63, 94)',
     brandMid: '#fda4af',
   },
+  {
+    name: 'Amber',
+    shades: ['#f59e0b', '#92400e', '#fef3c7'],
+    excitement: 1,
+    warp: 1,
+    phase: 0.09,
+    intensity: 0.5,
+    hueShift: 0,
+    brandGlow: 'rgb(245, 158, 11)',
+    brandMid: '#fef3c7',
+  },
 ];
 
 const cardEls = cards.map(() => ref<HTMLElement | null>(null));
 const envs = cards.map(() => ref(0));
+
+const playgroundSize = ref(132);
+const playgroundHue = ref(265);
+const playgroundSecondaryHue = ref(300);
+const playgroundIntensity = ref(0.5);
+const playgroundHueShift = ref(0);
+const playgroundExcitement = ref(1);
+const playgroundWarp = ref(1);
+const playgroundPhase = ref(0.09);
+const playgroundEnv = ref(0);
 
 cards.forEach((_, i) => {
   useHoverPreview(cardEls[i], envs[i], { seed: i });
@@ -74,6 +96,7 @@ cards.forEach((_, i) => {
       <GlowOrb
         :size="132"
         :hue="card.hue"
+        :shades="card.shades"
         :excitement="card.excitement"
         :warp="card.warp"
         :phase="card.phase"
@@ -88,6 +111,55 @@ cards.forEach((_, i) => {
     </div>
     <span class="cta">Click to Talk</span>
   </button>
+
+  <section class="playground" aria-labelledby="playground-heading">
+    <h2 id="playground-heading">Playground</h2>
+    <div class="playground-content">
+      <div class="playground-orb">
+        <GlowOrb :size="playgroundSize" :hue="playgroundHue" :secondary-hue="playgroundSecondaryHue"
+          :intensity="playgroundIntensity" :hue-shift="playgroundHueShift" :excitement="playgroundExcitement"
+          :warp="playgroundWarp" :phase="playgroundPhase" :env="playgroundEnv" />
+      </div>
+      <div class="controls">
+        <label class="control-row">
+          <span class="control-label">Size <output>{{ playgroundSize }}</output></span>
+          <input v-model.number="playgroundSize" type="range" min="60" max="240" step="2" aria-label="Size" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Hue <output>{{ playgroundHue }}</output></span>
+          <input v-model.number="playgroundHue" type="range" min="0" max="360" step="1" aria-label="Hue" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Secondary hue <output>{{ playgroundSecondaryHue }}</output></span>
+          <input v-model.number="playgroundSecondaryHue" type="range" min="0" max="360" step="1" aria-label="Secondary hue" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Intensity <output>{{ playgroundIntensity }}</output></span>
+          <input v-model.number="playgroundIntensity" type="range" min="0" max="1" step="0.01" aria-label="Intensity" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Hue shift <output>{{ playgroundHueShift }}</output></span>
+          <input v-model.number="playgroundHueShift" type="range" min="0" max="1" step="0.01" aria-label="Hue shift" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Excitement <output>{{ playgroundExcitement }}</output></span>
+          <input v-model.number="playgroundExcitement" type="range" min="0" max="2" step="0.05" aria-label="Excitement" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Warp <output>{{ playgroundWarp }}</output></span>
+          <input v-model.number="playgroundWarp" type="range" min="0" max="2" step="0.05" aria-label="Warp" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Phase <output>{{ playgroundPhase }}</output></span>
+          <input v-model.number="playgroundPhase" type="range" min="0" max="0.5" step="0.01" aria-label="Phase" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Environment <output>{{ playgroundEnv }}</output></span>
+          <input v-model.number="playgroundEnv" type="range" min="0" max="1" step="0.01" aria-label="Environment" />
+        </label>
+      </div>
+    </div>
+  </section>
 
   <section class="usage" aria-labelledby="usage-heading">
     <h1 id="usage-heading">Usage</h1>
@@ -317,6 +389,63 @@ import 'glow-orb-vue/style.css';
   max-width: 960px;
   color: #fbfbff;
 }
+.playground {
+  flex: 0 0 100%;
+  max-width: 960px;
+  margin-bottom: 64px;
+  color: #fbfbff;
+}
+
+.playground h2 {
+  margin: 0 0 24px;
+}
+
+.playground-content {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 2fr);
+  gap: 48px;
+  align-items: center;
+  padding: 28px;
+  background: #24242b;
+  border: 1px solid #3a3a44;
+  border-radius: 10px;
+}
+
+.playground-orb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+
+.control-row {
+  display: grid;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.control-label output {
+  color: #fbfbff;
+  font-variant-numeric: tabular-nums;
+}
+
+.control-row input {
+  width: 100%;
+  accent-color: #a78bfa;
+}
 
 .usage h1,
 .usage h2 {
@@ -360,6 +489,15 @@ import 'glow-orb-vue/style.css';
 }
 
 @media (max-width: 720px) {
+  .playground-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
   .usage {
     overflow-x: auto;
   }

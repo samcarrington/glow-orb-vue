@@ -74,13 +74,25 @@ const playgroundExcitement = ref(1);
 const playgroundWarp = ref(1);
 const playgroundPhase = ref(0.09);
 const playgroundEnv = ref(0);
+const playgroundOrbEl = ref<HTMLElement | null>(null);
+const playgroundHoverEnv = ref(0);
 
 cards.forEach((_, i) => {
   useHoverPreview(cardEls[i], envs[i], { seed: i });
 });
+useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
 </script>
 
 <template>
+  <header class="intro">
+    <h1>Glow Orb Vue</h1>
+    <p>
+      A softly animated, molten glow-orb for Vue 3 &mdash; inspired by the
+      voice-select cards at talk.deepgram.com. Hover the orbs below to see
+      them come alive, then use the playground to explore every prop.
+    </p>
+  </header>
+
   <button
     v-for="(card, i) in cards"
     :key="card.name"
@@ -115,10 +127,10 @@ cards.forEach((_, i) => {
   <section class="playground" aria-labelledby="playground-heading">
     <h2 id="playground-heading">Playground</h2>
     <div class="playground-content">
-      <div class="playground-orb">
+      <div class="playground-orb" ref="playgroundOrbEl">
         <GlowOrb :size="playgroundSize" :hue="playgroundHue" :secondary-hue="playgroundSecondaryHue"
           :intensity="playgroundIntensity" :hue-shift="playgroundHueShift" :excitement="playgroundExcitement"
-          :warp="playgroundWarp" :phase="playgroundPhase" :env="playgroundEnv" />
+          :warp="playgroundWarp" :phase="playgroundPhase" :env="Math.max(playgroundEnv, playgroundHoverEnv)" />
       </div>
       <div class="controls">
         <label class="control-row">
@@ -162,7 +174,7 @@ cards.forEach((_, i) => {
   </section>
 
   <section class="usage" aria-labelledby="usage-heading">
-    <h1 id="usage-heading">Usage</h1>
+    <h2 id="usage-heading">Usage</h2>
     <p>Install the package:</p>
     <pre><code>pnpm add glow-orb-vue</code></pre>
     <p>Use the component:</p>
@@ -175,7 +187,7 @@ import 'glow-orb-vue/style.css';
   &lt;GlowOrb :size="160" :hue="265" :hue-shift="0.15" /&gt;
 &lt;/template&gt;</code></pre>
 
-    <h2>Props</h2>
+    <h3>Props</h3>
     <table>
       <thead>
         <tr>
@@ -266,6 +278,23 @@ import 'glow-orb-vue/style.css';
  * Rollover-state pattern reproduced from talk.deepgram.com's voice-select cards.
  * Pairs a GlowOrb with useHoverPreview() for the "orb comes alive" hover behavior.
  */
+.intro {
+  flex: 0 0 100%;
+  max-width: 720px;
+  margin-bottom: 40px;
+  color: #fbfbff;
+}
+
+.intro h1 {
+  margin: 0 0 12px;
+}
+
+.intro p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+}
+
 .glow-card {
   --orb: 132px;
 
@@ -416,6 +445,7 @@ import 'glow-orb-vue/style.css';
   justify-content: center;
   align-items: center;
   min-height: 240px;
+  cursor: pointer;
 }
 
 .controls {

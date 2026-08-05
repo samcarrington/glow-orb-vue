@@ -1,4 +1,5 @@
 .build-cache/
+.worktrees/
 .claude/
 .dialogue/
 node_modules/

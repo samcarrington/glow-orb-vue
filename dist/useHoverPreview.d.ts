@@ -10,10 +10,6 @@ import { Ref } from 'vue';
  *   useHoverPreview(cardEl, env, { seed: 0 });
  */
 export interface UseHoverPreviewOptions {
-  seed?: number;
+    seed?: number;
 }
-export declare function useHoverPreview(
-  targetRef: Ref<HTMLElement | null>,
-  envRef: Ref<number>,
-  options?: UseHoverPreviewOptions
-): void;
+export declare function useHoverPreview(targetRef: Ref<HTMLElement | null>, envRef: Ref<number>, options?: UseHoverPreviewOptions): void;

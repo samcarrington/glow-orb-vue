@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: fileURLToPath(new URL('.', import.meta.url)),
-  base: '/glow-orb-vue/',
+  base: '/',
   plugins: [vue()],
   resolve: {
     alias: {

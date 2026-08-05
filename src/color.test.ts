@@ -20,6 +20,39 @@ describe('resolveBasePalette', () => {
     expect(palette.blob2.mode).toBe('oklch');
   });
 
+  test('parses rgb()/rgba() and hsl()/hsla() shade strings', () => {
+    // Arrange
+    const shades: [string, string, string] = [
+      'rgb(79, 70, 229)',
+      'rgba(167, 139, 250, 0.5)',
+      'hsl(240, 83%, 60%)',
+    ];
+
+    // Act
+    const palette = resolveBasePalette({ shades });
+
+    // Assert
+    expect(palette.blob0.mode).toBe('oklch');
+    expect(palette.blob1.alpha).toBeCloseTo(0.5);
+    expect(palette.blob2.mode).toBe('oklch');
+  });
+
+  test('parses alpha from 8-digit hex and hsla() shade strings', () => {
+    // Arrange
+    const shades: [string, string, string] = [
+      '#4f46e580',
+      '#a78bfa',
+      'hsla(265, 83%, 60%, 0.25)',
+    ];
+
+    // Act
+    const palette = resolveBasePalette({ shades });
+
+    // Assert
+    expect(palette.blob0.alpha).toBeCloseTo(0.5, 1);
+    expect(palette.blob2.alpha).toBeCloseTo(0.25);
+  });
+
   test('throws a clear error when a shade string cannot be parsed', () => {
     // Arrange
     const shades: [string, string, string] = [

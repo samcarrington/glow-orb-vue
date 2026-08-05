@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { computeBlobFrame } from "./animation";
-import { deriveGlow, driftColor, formatOklch, resolveBasePalette } from "./color";
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computeBlobFrame } from './animation';
+import {
+  deriveGlow,
+  driftColor,
+  formatOklch,
+  resolveBasePalette,
+} from './color';
 
 export interface GlowOrbProps {
   /** Diameter of the orb, in pixels. */
@@ -44,10 +49,20 @@ const blob2El = ref<HTMLDivElement | null>(null);
 const blobEls = [blob0El, blob1El, blob2El];
 
 const basePalette = computed(() =>
-  resolveBasePalette({ shades: props.shades, hue: props.hue, secondaryHue: props.secondaryHue }),
+  resolveBasePalette({
+    shades: props.shades,
+    hue: props.hue,
+    secondaryHue: props.secondaryHue,
+  })
 );
-const paletteList = computed(() => [basePalette.value.blob0, basePalette.value.blob1, basePalette.value.blob2]);
-const resolvedGlow = computed(() => props.glow ?? deriveGlow(basePalette.value.blob0, 0.6));
+const paletteList = computed(() => [
+  basePalette.value.blob0,
+  basePalette.value.blob1,
+  basePalette.value.blob2,
+]);
+const resolvedGlow = computed(
+  () => props.glow ?? deriveGlow(basePalette.value.blob0, 0.6)
+);
 
 let raf = 0;
 let lastTimestamp = 0;
@@ -91,7 +106,9 @@ function tick(now: number) {
 }
 
 onMounted(() => {
-  reduced = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  reduced =
+    typeof matchMedia !== 'undefined' &&
+    matchMedia('(prefers-reduced-motion: reduce)').matches;
   raf = requestAnimationFrame(tick);
 });
 

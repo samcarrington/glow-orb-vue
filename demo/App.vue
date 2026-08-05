@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { GlowOrb, useHoverPreview } from "glow-orb-vue";
+import { GlowOrb, useHoverPreview } from 'glow-orb-vue';
+import { ref } from 'vue';
 
 interface OrbCardConfig {
   name: string;
@@ -16,37 +16,37 @@ interface OrbCardConfig {
 
 const cards: OrbCardConfig[] = [
   {
-    name: "Indigo",
+    name: 'Indigo',
     hue: 265,
     excitement: 1,
     warp: 1,
     phase: 0.09,
     intensity: 0.5,
     hueShift: 0.15,
-    brandGlow: "rgb(79, 70, 229)",
-    brandMid: "#a78bfa",
+    brandGlow: 'rgb(79, 70, 229)',
+    brandMid: '#a78bfa',
   },
   {
-    name: "Emerald",
+    name: 'Emerald',
     hue: 160,
     excitement: 1.4,
     warp: 0.6,
     phase: 0.22,
     intensity: 0.7,
     hueShift: 0.3,
-    brandGlow: "rgb(16, 185, 129)",
-    brandMid: "#6ee7b7",
+    brandGlow: 'rgb(16, 185, 129)',
+    brandMid: '#6ee7b7',
   },
   {
-    name: "Rose",
+    name: 'Rose',
     hue: 350,
     excitement: 0.7,
     warp: 1.6,
     phase: 0.05,
     intensity: 0.35,
     hueShift: 0.05,
-    brandGlow: "rgb(244, 63, 94)",
-    brandMid: "#fda4af",
+    brandGlow: 'rgb(244, 63, 94)',
+    brandMid: '#fda4af',
   },
 ];
 

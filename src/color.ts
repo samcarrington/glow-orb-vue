@@ -1,7 +1,7 @@
-import { converter, formatRgb, type Oklch } from "culori";
-import { clamp, normalizeHue } from "./utils";
+import { converter, formatRgb, type Oklch } from 'culori';
+import { clamp, normalizeHue } from './utils';
 
-const toOklch = converter("oklch");
+const toOklch = converter('oklch');
 
 /** Fallback base hue (indigo) used when neither `shades` nor `hue` is provided. */
 const DEFAULT_HUE = 265;
@@ -21,7 +21,12 @@ export interface PaletteOptions {
 }
 
 function shadeFromHue(hue: number): Oklch {
-  return { mode: "oklch", l: BASE_LIGHTNESS, c: BASE_CHROMA, h: normalizeHue(hue) };
+  return {
+    mode: 'oklch',
+    l: BASE_LIGHTNESS,
+    c: BASE_CHROMA,
+    h: normalizeHue(hue),
+  };
 }
 
 function parseShade(shade: string): Oklch {
@@ -70,11 +75,21 @@ export function driftColor(input: DriftInput): Oklch {
   const intensity = clamp(input.intensity, 0, 1);
   const baseHue = input.base.h ?? 0;
 
-  const hue = normalizeHue(baseHue + Math.sin(input.time * 0.13 + input.offset) * 40 * hueShift);
-  const l = clamp(input.base.l + Math.sin(input.time * 0.21 + input.offset) * 0.1 * intensity, 0, 1);
-  const c = Math.max(0, input.base.c + Math.sin(input.time * 0.17 + input.offset * 1.3) * 0.05 * intensity);
+  const hue = normalizeHue(
+    baseHue + Math.sin(input.time * 0.13 + input.offset) * 40 * hueShift
+  );
+  const l = clamp(
+    input.base.l + Math.sin(input.time * 0.21 + input.offset) * 0.1 * intensity,
+    0,
+    1
+  );
+  const c = Math.max(
+    0,
+    input.base.c +
+      Math.sin(input.time * 0.17 + input.offset * 1.3) * 0.05 * intensity
+  );
 
-  return { mode: "oklch", l, c, h: hue };
+  return { mode: 'oklch', l, c, h: hue };
 }
 
 export function formatOklch(color: Oklch): string {

@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref } from "vue";
+import { onMounted, onUnmounted, type Ref } from 'vue';
 
 /**
  * Reproduces the "make the orb feel alive on rollover" trick: instead of a flat
@@ -26,7 +26,7 @@ function envelope(time: number, phase: number): number {
 export function useHoverPreview(
   targetRef: Ref<HTMLElement | null>,
   envRef: Ref<number>,
-  options: UseHoverPreviewOptions = {},
+  options: UseHoverPreviewOptions = {}
 ): void {
   const seed = options.seed ?? 0;
   let hovering = false;
@@ -55,14 +55,14 @@ export function useHoverPreview(
   }
 
   onMounted(() => {
-    targetRef.value?.addEventListener("pointerenter", onEnter);
-    targetRef.value?.addEventListener("pointerleave", onLeave);
+    targetRef.value?.addEventListener('pointerenter', onEnter);
+    targetRef.value?.addEventListener('pointerleave', onLeave);
     raf = requestAnimationFrame(tick);
   });
 
   onUnmounted(() => {
     cancelAnimationFrame(raf);
-    targetRef.value?.removeEventListener("pointerenter", onEnter);
-    targetRef.value?.removeEventListener("pointerleave", onLeave);
+    targetRef.value?.removeEventListener('pointerenter', onEnter);
+    targetRef.value?.removeEventListener('pointerleave', onLeave);
   });
 }

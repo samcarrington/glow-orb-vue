@@ -2,7 +2,7 @@
  * Pure motion math for a single blob, extracted from the original glow-orb.js
  * tick loop so it can be unit tested independent of the DOM/RAF loop.
  */
-import { clamp } from "./utils";
+import { clamp } from './utils';
 
 export interface BlobFrameInput {
   /** Orb-local elapsed seconds (frozen by the caller under reduced motion). */
@@ -42,7 +42,8 @@ export function computeBlobFrame(input: BlobFrameInput): BlobFrame {
     Math.cos(t * 0.26) * 16 * excitement +
     Math.sin(t * 0.69) * 8 * excitement -
     env * 8;
-  const rotation = Math.sin(t * 0.19) * 120 * warp + Math.sin(t * 0.53) * 30 * warp;
+  const rotation =
+    Math.sin(t * 0.19) * 120 * warp + Math.sin(t * 0.53) * 30 * warp;
   const scaleX = 1.1 + 0.3 * excitement * Math.sin(t * 0.47) + env * 0.08;
   const scaleY = 1.1 + 0.3 * excitement * Math.sin(t * 0.61 + 2.1) + env * 0.3;
 

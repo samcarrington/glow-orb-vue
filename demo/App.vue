@@ -93,36 +93,38 @@ useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
     </p>
   </header>
 
-  <button
-    v-for="(card, i) in cards"
-    :key="card.name"
-    :ref="(el) => (cardEls[i].value = el as HTMLElement | null)"
-    class="glow-card"
-    :style="{ '--brand-glow': card.brandGlow, '--brand-mid': card.brandMid }"
-  >
-    <div class="orb-stage">
-      <div class="orb-ground" aria-hidden="true">
-        <span class="ground-pool"></span>
-        <span class="ground-contact"></span>
+  <div class="cards-row">
+    <button
+      v-for="(card, i) in cards"
+      :key="card.name"
+      :ref="(el) => (cardEls[i].value = el as HTMLElement | null)"
+      class="glow-card"
+      :style="{ '--brand-glow': card.brandGlow, '--brand-mid': card.brandMid }"
+    >
+      <div class="orb-stage">
+        <div class="orb-ground" aria-hidden="true">
+          <span class="ground-pool"></span>
+          <span class="ground-contact"></span>
+        </div>
+        <GlowOrb
+          :size="132"
+          :hue="card.hue"
+          :shades="card.shades"
+          :excitement="card.excitement"
+          :warp="card.warp"
+          :phase="card.phase"
+          :intensity="card.intensity"
+          :hue-shift="card.hueShift"
+          :glow="card.brandGlow"
+          :env="envs[i].value"
+        />
       </div>
-      <GlowOrb
-        :size="132"
-        :hue="card.hue"
-        :shades="card.shades"
-        :excitement="card.excitement"
-        :warp="card.warp"
-        :phase="card.phase"
-        :intensity="card.intensity"
-        :hue-shift="card.hueShift"
-        :glow="card.brandGlow"
-        :env="envs[i].value"
-      />
-    </div>
-    <div class="plate">
-      <span class="name">{{ card.name }}</span>
-    </div>
-    <span class="cta">Click to Talk</span>
-  </button>
+      <div class="plate">
+        <span class="name">{{ card.name }}</span>
+      </div>
+      <span class="cta">Click to Talk</span>
+    </button>
+  </div>
 
   <section class="playground" aria-labelledby="playground-heading">
     <h2 id="playground-heading">Playground</h2>
@@ -279,7 +281,7 @@ import 'glow-orb-vue/style.css';
  * Pairs a GlowOrb with useHoverPreview() for the "orb comes alive" hover behavior.
  */
 .intro {
-  flex: 0 0 100%;
+  width: 100%;
   max-width: 720px;
   margin-bottom: 40px;
   color: #fbfbff;
@@ -408,18 +410,27 @@ import 'glow-orb-vue/style.css';
 }
 
 :global(#app) {
-  flex-wrap: wrap;
-  align-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 64px 16px;
 }
 
+.cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
 .usage {
-  flex: 0 0 100%;
+  width: 100%;
   max-width: 960px;
   color: #fbfbff;
 }
 .playground {
-  flex: 0 0 100%;
+  width: 100%;
   max-width: 960px;
   margin-bottom: 64px;
   color: #fbfbff;

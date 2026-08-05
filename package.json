@@ -26,6 +26,9 @@
   },
   "homepage": "https://glow-orb-vue.gwawr.uk",
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "./dist/glow-orb-vue.cjs",
   "module": "./dist/glow-orb-vue.js",
   "types": "./dist/index.d.ts",
@@ -64,6 +67,7 @@
     "vite-plugin-dts": "5.0.3",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^15.11.7",
+    "vite-plugin-lib-inject-css": "^2.2.2",
     "vitest": "4.1.10",
     "vue": "3.5.40",
     "vue-tsc": "3.3.9"

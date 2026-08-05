@@ -120,17 +120,20 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="glow-orb" :style="{ '--orb-size': `${size}px`, '--orb-glow': resolvedGlow }">
-    <div class="lava">
-      <div ref="blob0El" class="blob blob0"></div>
-      <div ref="blob1El" class="blob blob1"></div>
-      <div ref="blob2El" class="blob blob2"></div>
+  <div
+    class="glow-orb-vue-root"
+    :style="{ '--orb-size': `${size}px`, '--orb-glow': resolvedGlow }"
+  >
+    <div class="glow-orb-vue-lava">
+      <div ref="blob0El" class="glow-orb-vue-blob glow-orb-vue-blob-0"></div>
+      <div ref="blob1El" class="glow-orb-vue-blob glow-orb-vue-blob-1"></div>
+      <div ref="blob2El" class="glow-orb-vue-blob glow-orb-vue-blob-2"></div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.glow-orb {
+<style>
+.glow-orb-vue-root {
   display: inline-block;
   position: relative;
   width: var(--orb-size, 132px);
@@ -144,30 +147,30 @@ onUnmounted(() => {
     0 20px 44px -14px var(--orb-glow, rgba(80, 90, 255, 0.6));
   transition: box-shadow 0.4s ease;
 }
-.lava {
+.glow-orb-vue-lava {
   position: absolute;
   inset: 0;
 }
-.blob {
+.glow-orb-vue-blob {
   position: absolute;
   border-radius: 50%;
   will-change: transform, border-radius;
 }
-.blob0 {
+.glow-orb-vue-blob-0 {
   left: 3%;
   top: 50%;
   width: 102%;
   height: 52%;
   filter: blur(9px);
 }
-.blob1 {
+.glow-orb-vue-blob-1 {
   left: 7%;
   top: 42%;
   width: 94%;
   height: 48%;
   filter: blur(8px);
 }
-.blob2 {
+.glow-orb-vue-blob-2 {
   left: 30%;
   top: 46%;
   width: 50%;
@@ -175,7 +178,7 @@ onUnmounted(() => {
   filter: blur(7px);
 }
 @media (prefers-reduced-motion: reduce) {
-  .blob {
+  .glow-orb-vue-blob {
     transform: none !important;
   }
 }

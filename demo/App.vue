@@ -182,12 +182,12 @@ useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
     <p>Use the component:</p>
     <pre><code>&lt;script setup lang="ts"&gt;
 import { GlowOrb } from 'glow-orb-vue';
-import 'glow-orb-vue/style.css';
 &lt;/script&gt;
 
 &lt;template&gt;
   &lt;GlowOrb :size="160" :hue="265" :hue-shift="0.15" /&gt;
 &lt;/template&gt;</code></pre>
+    <p>CSS is imported automatically when using a bundler (Vite, webpack, Rollup). If you're loading the package without one (a CDN or import map), add a <code>&lt;link rel="stylesheet"&gt;</code> to <code>dist/glow-orb-vue.css</code> instead.</p>
 
     <h3>Props</h3>
     <table>

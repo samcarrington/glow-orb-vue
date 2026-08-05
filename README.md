@@ -12,17 +12,24 @@ pnpm add glow-orb-vue
 
 ## Usage
 
-Import both the component and its stylesheet:
+If you use a bundler (Vite, webpack, Rollup, etc.), the component's CSS is imported automatically - just import the component:
 
 ```vue
 <script setup lang="ts">
 import { GlowOrb } from 'glow-orb-vue';
-import 'glow-orb-vue/style.css';
 </script>
 
 <template>
   <GlowOrb :size="160" :hue="265" :hue-shift="0.15" />
 </template>
+```
+
+### Without a bundler
+
+If you're loading the package unbundled (a CDN, an import map, or anywhere else that doesn't resolve JS-side CSS imports), import the stylesheet explicitly instead:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/glow-orb-vue/dist/glow-orb-vue.css" />
 ```
 
 ## Props
@@ -51,7 +58,6 @@ Values outside the stated 0–1 ranges are clamped where applicable. The compone
 <script setup lang="ts">
 import { ref } from 'vue';
 import { GlowOrb, useHoverPreview } from 'glow-orb-vue';
-import 'glow-orb-vue/style.css';
 
 const card = ref<HTMLElement | null>(null);
 const env = ref(0);

@@ -1,5 +1,5 @@
 import { computed as e, createElementBlock as t, createElementVNode as n, defineComponent as r, normalizeStyle as i, onMounted as a, onUnmounted as o, openBlock as s, ref as c } from "vue";
-//#region src/utils.ts
+import './glow-orb-vue.css';//#region src/utils.ts
 function l(e, t, n) {
 	return Math.max(t, Math.min(n, e));
 }
@@ -194,11 +194,7 @@ function P(e, t = .6) {
 }
 //#endregion
 //#region src/GlowOrb.vue?vue&type=script&setup=true&lang.ts
-var F = { class: "lava" }, I = /*#__PURE__*/ ((e, t) => {
-	let n = e.__vccOpts || e;
-	for (let [e, r] of t) n[e] = r;
-	return n;
-})(/* @__PURE__ */ r({
+var F = { class: "glow-orb-vue-lava" }, I = /* @__PURE__ */ r({
 	__name: "GlowOrb",
 	props: {
 		size: { default: 132 },
@@ -268,7 +264,7 @@ var F = { class: "lava" }, I = /*#__PURE__*/ ((e, t) => {
 		}), o(() => {
 			cancelAnimationFrame(v), C?.removeEventListener("change", w);
 		}), (e, a) => (s(), t("div", {
-			class: "glow-orb",
+			class: "glow-orb-vue-root",
 			style: i({
 				"--orb-size": `${r.size}px`,
 				"--orb-glow": _.value
@@ -277,21 +273,21 @@ var F = { class: "lava" }, I = /*#__PURE__*/ ((e, t) => {
 			n("div", {
 				ref_key: "blob0El",
 				ref: u,
-				class: "blob blob0"
+				class: "glow-orb-vue-blob glow-orb-vue-blob-0"
 			}, null, 512),
 			n("div", {
 				ref_key: "blob1El",
 				ref: f,
-				class: "blob blob1"
+				class: "glow-orb-vue-blob glow-orb-vue-blob-1"
 			}, null, 512),
 			n("div", {
 				ref_key: "blob2El",
 				ref: p,
-				class: "blob blob2"
+				class: "glow-orb-vue-blob glow-orb-vue-blob-2"
 			}, null, 512)
 		])], 4));
 	}
-}), [["__scopeId", "data-v-535adb49"]]);
+});
 //#endregion
 //#region src/useHoverPreview.ts
 function L(e, t) {

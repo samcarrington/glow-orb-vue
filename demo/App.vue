@@ -4,7 +4,8 @@ import { ref } from 'vue';
 
 interface OrbCardConfig {
   name: string;
-  hue: number;
+  hue?: number;
+  shades?: [string, string, string];
   excitement: number;
   warp: number;
   phase: number;
@@ -48,62 +49,144 @@ const cards: OrbCardConfig[] = [
     brandGlow: 'rgb(244, 63, 94)',
     brandMid: '#fda4af',
   },
+  {
+    name: 'Amber',
+    shades: ['#f59e0b', '#92400e', '#fef3c7'],
+    excitement: 1,
+    warp: 1,
+    phase: 0.09,
+    intensity: 0.5,
+    hueShift: 0,
+    brandGlow: 'rgb(245, 158, 11)',
+    brandMid: '#fef3c7',
+  },
 ];
 
 const cardEls = cards.map(() => ref<HTMLElement | null>(null));
 const envs = cards.map(() => ref(0));
 
+const playgroundSize = ref(132);
+const playgroundHue = ref(265);
+const playgroundSecondaryHue = ref(300);
+const playgroundIntensity = ref(0.5);
+const playgroundHueShift = ref(0);
+const playgroundExcitement = ref(1);
+const playgroundWarp = ref(1);
+const playgroundPhase = ref(0.09);
+const playgroundEnv = ref(0);
+const playgroundOrbEl = ref<HTMLElement | null>(null);
+const playgroundHoverEnv = ref(0);
+
 cards.forEach((_, i) => {
   useHoverPreview(cardEls[i], envs[i], { seed: i });
 });
+useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
 </script>
 
 <template>
-  <button
-    v-for="(card, i) in cards"
-    :key="card.name"
-    :ref="(el) => (cardEls[i].value = el as HTMLElement | null)"
-    class="glow-card"
-    :style="{ '--brand-glow': card.brandGlow, '--brand-mid': card.brandMid }"
-  >
-    <div class="orb-stage">
-      <div class="orb-ground" aria-hidden="true">
-        <span class="ground-pool"></span>
-        <span class="ground-contact"></span>
+  <header class="intro">
+    <h1>Glow Orb Vue</h1>
+    <p>
+      A softly animated, molten glow-orb for Vue 3 - inspired by the
+      voice-select cards at talk.deepgram.com (imitation is the
+      sincerest form of flattery, chaps!). Hover the orbs below to see
+      them come alive, then use the playground to explore every prop.
+    </p>
+    <p>
+      In the four examples, the first three use a base hue, while the
+      fourth uses three explicit shades. The orbs are all animated
+      with different excitement, warp, phase, intensity and hue-shift
+      values.
+    </p>
+  </header>
+
+  <div class="cards-row">
+    <button v-for="(card, i) in cards" :key="card.name" :ref="(el) => (cardEls[i].value = el as HTMLElement | null)"
+      class="glow-card" :style="{ '--brand-glow': card.brandGlow, '--brand-mid': card.brandMid }">
+      <div class="orb-stage">
+        <div class="orb-ground" aria-hidden="true">
+          <span class="ground-pool"></span>
+          <span class="ground-contact"></span>
+        </div>
+        <GlowOrb :size="132" :hue="card.hue" :shades="card.shades" :excitement="card.excitement" :warp="card.warp"
+          :phase="card.phase" :intensity="card.intensity" :hue-shift="card.hueShift" :glow="card.brandGlow"
+          :env="envs[i].value" />
       </div>
-      <GlowOrb
-        :size="132"
-        :hue="card.hue"
-        :excitement="card.excitement"
-        :warp="card.warp"
-        :phase="card.phase"
-        :intensity="card.intensity"
-        :hue-shift="card.hueShift"
-        :glow="card.brandGlow"
-        :env="envs[i].value"
-      />
+      <div class="plate">
+        <span class="name">{{ card.name }}</span>
+      </div>
+      <span class="cta">Click to Talk</span>
+    </button>
+  </div>
+
+  <section class="playground" aria-labelledby="playground-heading">
+    <h2 id="playground-heading">Playground</h2>
+    <div class="playground-content">
+      <div class="playground-orb" ref="playgroundOrbEl">
+        <GlowOrb :size="playgroundSize" :hue="playgroundHue" :secondary-hue="playgroundSecondaryHue"
+          :intensity="playgroundIntensity" :hue-shift="playgroundHueShift" :excitement="playgroundExcitement"
+          :warp="playgroundWarp" :phase="playgroundPhase" :env="Math.max(playgroundEnv, playgroundHoverEnv)" />
+      </div>
+      <div class="controls">
+        <label class="control-row">
+          <span class="control-label">Size <output>{{ playgroundSize }}</output></span>
+          <input v-model.number="playgroundSize" type="range" min="60" max="240" step="2" aria-label="Size" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Hue <output>{{ playgroundHue }}</output></span>
+          <input v-model.number="playgroundHue" type="range" min="0" max="360" step="1" aria-label="Hue" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Secondary hue <output>{{ playgroundSecondaryHue }}</output></span>
+          <input v-model.number="playgroundSecondaryHue" type="range" min="0" max="360" step="1"
+            aria-label="Secondary hue" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Intensity <output>{{ playgroundIntensity }}</output></span>
+          <input v-model.number="playgroundIntensity" type="range" min="0" max="1" step="0.01" aria-label="Intensity" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Hue shift <output>{{ playgroundHueShift }}</output></span>
+          <input v-model.number="playgroundHueShift" type="range" min="0" max="1" step="0.01" aria-label="Hue shift" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Excitement <output>{{ playgroundExcitement }}</output></span>
+          <input v-model.number="playgroundExcitement" type="range" min="0" max="2" step="0.05"
+            aria-label="Excitement" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Warp <output>{{ playgroundWarp }}</output></span>
+          <input v-model.number="playgroundWarp" type="range" min="0" max="2" step="0.05" aria-label="Warp" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Phase <output>{{ playgroundPhase }}</output></span>
+          <input v-model.number="playgroundPhase" type="range" min="0" max="0.5" step="0.01" aria-label="Phase" />
+        </label>
+        <label class="control-row">
+          <span class="control-label">Environment <output>{{ playgroundEnv }}</output></span>
+          <input v-model.number="playgroundEnv" type="range" min="0" max="1" step="0.01" aria-label="Environment" />
+        </label>
+      </div>
     </div>
-    <div class="plate">
-      <span class="name">{{ card.name }}</span>
-    </div>
-    <span class="cta">Click to Talk</span>
-  </button>
+  </section>
 
   <section class="usage" aria-labelledby="usage-heading">
-    <h1 id="usage-heading">Usage</h1>
+    <h2 id="usage-heading">Usage</h2>
     <p>Install the package:</p>
     <pre><code>pnpm add glow-orb-vue</code></pre>
     <p>Use the component:</p>
     <pre><code>&lt;script setup lang="ts"&gt;
 import { GlowOrb } from 'glow-orb-vue';
-import 'glow-orb-vue/style.css';
 &lt;/script&gt;
 
 &lt;template&gt;
   &lt;GlowOrb :size="160" :hue="265" :hue-shift="0.15" /&gt;
 &lt;/template&gt;</code></pre>
+    <p>CSS is imported automatically when using a bundler (Vite, webpack, Rollup). If you're loading the package without
+      one (a CDN or import map), add a <code>&lt;link rel="stylesheet"&gt;</code> to <code>dist/glow-orb-vue.css</code>
+      instead.</p>
 
-    <h2>Props</h2>
+    <h3>Props</h3>
     <table>
       <thead>
         <tr>
@@ -194,6 +277,24 @@ import 'glow-orb-vue/style.css';
  * Rollover-state pattern reproduced from talk.deepgram.com's voice-select cards.
  * Pairs a GlowOrb with useHoverPreview() for the "orb comes alive" hover behavior.
  */
+.intro {
+  width: 100%;
+  max-width: 960px;
+  margin-bottom: 40px;
+  color: #fbfbff;
+}
+
+.intro h1 {
+  margin: 0 0 12px;
+}
+
+.intro p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+  margin-bottom: 1.2em;
+}
+
 .glow-card {
   --orb: 132px;
 
@@ -216,6 +317,7 @@ import 'glow-orb-vue/style.css';
     transform 0.45s cubic-bezier(0.34, 1.4, 0.4, 1),
     filter 0.45s ease;
 }
+
 .glow-card:hover .orb-stage,
 .glow-card:focus-visible .orb-stage {
   transform: scale(1.08);
@@ -232,6 +334,7 @@ import 'glow-orb-vue/style.css';
   pointer-events: none;
   z-index: 0;
 }
+
 .glow-card .ground-pool {
   position: absolute;
   inset: 0;
@@ -241,15 +344,14 @@ import 'glow-orb-vue/style.css';
   height: 150%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in srgb, var(--brand-glow) 55%, transparent) 0%,
-    color-mix(in srgb, var(--brand-mid) 28%, transparent) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--brand-glow) 55%, transparent) 0%,
+      color-mix(in srgb, var(--brand-mid) 28%, transparent) 40%,
+      transparent 70%);
   filter: blur(7px);
   opacity: 0.85;
 }
+
 .glow-card .ground-contact {
   position: absolute;
   left: 50%;
@@ -258,12 +360,10 @@ import 'glow-orb-vue/style.css';
   height: 42%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 38%,
-    transparent 72%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 38%,
+      transparent 72%);
   filter: blur(1px);
 }
 
@@ -281,6 +381,7 @@ import 'glow-orb-vue/style.css';
   border-radius: 10px;
   transition: background 0.35s ease, border-color 0.35s ease;
 }
+
 .glow-card:hover .plate,
 .glow-card:focus-visible .plate {
   background: #2a2a32;
@@ -307,15 +408,83 @@ import 'glow-orb-vue/style.css';
 }
 
 :global(#app) {
-  flex-wrap: wrap;
-  align-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 64px 16px;
 }
 
+.cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
 .usage {
-  flex: 0 0 100%;
+  width: 100%;
   max-width: 960px;
   color: #fbfbff;
+}
+
+.playground {
+  width: 100%;
+  max-width: 960px;
+  margin-bottom: 64px;
+  color: #fbfbff;
+}
+
+.playground h2 {
+  margin: 0 0 24px;
+}
+
+.playground-content {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 2fr);
+  gap: 48px;
+  align-items: center;
+  padding: 28px;
+  background: #24242b;
+  border: 1px solid #3a3a44;
+  border-radius: 10px;
+}
+
+.playground-orb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+  cursor: pointer;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+
+.control-row {
+  display: grid;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.control-label output {
+  color: #fbfbff;
+  font-variant-numeric: tabular-nums;
+}
+
+.control-row input {
+  width: 100%;
+  accent-color: #a78bfa;
 }
 
 .usage h1,
@@ -360,6 +529,15 @@ import 'glow-orb-vue/style.css';
 }
 
 @media (max-width: 720px) {
+  .playground-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
   .usage {
     overflow-x: auto;
   }
@@ -368,6 +546,7 @@ import 'glow-orb-vue/style.css';
     min-width: 720px;
   }
 }
+
 .glow-card:hover .cta,
 .glow-card:focus-visible .cta {
   opacity: 1;

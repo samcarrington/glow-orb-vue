@@ -13,7 +13,7 @@ describe('GlowOrb', () => {
     const wrapper = mount(GlowOrb);
 
     // Assert
-    expect(wrapper.findAll('.blob')).toHaveLength(3);
+    expect(wrapper.findAll('.glow-orb-vue-blob')).toHaveLength(3);
     wrapper.unmount();
   });
 
@@ -40,7 +40,7 @@ describe('GlowOrb', () => {
 
     // Assert
     expect(warnSpy).toHaveBeenCalled();
-    expect(wrapper.find('.glow-orb').exists()).toBe(true);
+    expect(wrapper.find('.glow-orb-vue-root').exists()).toBe(true);
     wrapper.unmount();
   });
 
@@ -51,7 +51,7 @@ describe('GlowOrb', () => {
     });
 
     // Assert
-    expect(wrapper.find('.glow-orb').exists()).toBe(true);
+    expect(wrapper.find('.glow-orb-vue-root').exists()).toBe(true);
     wrapper.unmount();
   });
 });

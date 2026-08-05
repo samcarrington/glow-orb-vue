@@ -1,4 +1,15 @@
-import { Oklch } from 'culori';
+/**
+ * Minimal OKLCH color representation, matching the shape of culori's `Oklch`
+ * type for the subset of fields this component uses. Kept local so the
+ * library has no runtime color-space dependency.
+ */
+export interface Oklch {
+    mode: 'oklch';
+    l: number;
+    c: number;
+    h?: number;
+    alpha?: number;
+}
 export interface BasePalette {
     blob0: Oklch;
     blob1: Oklch;

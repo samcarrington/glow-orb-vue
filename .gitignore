@@ -1,0 +1,7 @@
+.build-cache/
+.claude/
+.dialogue/
+node_modules/
+dist/
+*.tsbuildinfo
+.pnpm-store/

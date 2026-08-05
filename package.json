@@ -1,0 +1,45 @@
+{
+  "name": "glow-orb-vue",
+  "version": "0.1.0",
+  "description": "A Vue 3 component reproducing the talk.deepgram.com molten-orb effect, with per-orb behavior and color individuality.",
+  "type": "module",
+  "main": "./dist/glow-orb-vue.cjs",
+  "module": "./dist/glow-orb-vue.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/glow-orb-vue.js",
+      "require": "./dist/glow-orb-vue.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite --config demo/vite.config.ts",
+    "build": "vue-tsc -b && vite build",
+    "test": "vitest run",
+    "typecheck": "vue-tsc --noEmit",
+    "format": "biome format --write .",
+    "lint": "biome check --write ."
+  },
+  "peerDependencies": {
+    "vue": "3.5.40"
+  },
+  "dependencies": {
+    "culori": "4.0.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "22.10.0",
+    "@vitejs/plugin-vue": "6.0.8",
+    "typescript": "7.0.2",
+    "vite": "8.2.0",
+    "vite-plugin-dts": "5.0.3",
+    "vitest": "4.1.10",
+    "vue": "3.5.40",
+    "vue-tsc": "3.3.9"
+  },
+  "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee"
+}

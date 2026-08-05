@@ -87,37 +87,30 @@ useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
   <header class="intro">
     <h1>Glow Orb Vue</h1>
     <p>
-      A softly animated, molten glow-orb for Vue 3 &mdash; inspired by the
-      voice-select cards at talk.deepgram.com. Hover the orbs below to see
+      A softly animated, molten glow-orb for Vue 3 - inspired by the
+      voice-select cards at talk.deepgram.com (imitation is the
+      sincerest form of flattery, chaps!). Hover the orbs below to see
       them come alive, then use the playground to explore every prop.
+    </p>
+    <p>
+      In the four examples, the first three use a base hue, while the
+      fourth uses three explicit shades. The orbs are all animated
+      with different excitement, warp, phase, intensity and hue-shift
+      values.
     </p>
   </header>
 
   <div class="cards-row">
-    <button
-      v-for="(card, i) in cards"
-      :key="card.name"
-      :ref="(el) => (cardEls[i].value = el as HTMLElement | null)"
-      class="glow-card"
-      :style="{ '--brand-glow': card.brandGlow, '--brand-mid': card.brandMid }"
-    >
+    <button v-for="(card, i) in cards" :key="card.name" :ref="(el) => (cardEls[i].value = el as HTMLElement | null)"
+      class="glow-card" :style="{ '--brand-glow': card.brandGlow, '--brand-mid': card.brandMid }">
       <div class="orb-stage">
         <div class="orb-ground" aria-hidden="true">
           <span class="ground-pool"></span>
           <span class="ground-contact"></span>
         </div>
-        <GlowOrb
-          :size="132"
-          :hue="card.hue"
-          :shades="card.shades"
-          :excitement="card.excitement"
-          :warp="card.warp"
-          :phase="card.phase"
-          :intensity="card.intensity"
-          :hue-shift="card.hueShift"
-          :glow="card.brandGlow"
-          :env="envs[i].value"
-        />
+        <GlowOrb :size="132" :hue="card.hue" :shades="card.shades" :excitement="card.excitement" :warp="card.warp"
+          :phase="card.phase" :intensity="card.intensity" :hue-shift="card.hueShift" :glow="card.brandGlow"
+          :env="envs[i].value" />
       </div>
       <div class="plate">
         <span class="name">{{ card.name }}</span>
@@ -145,7 +138,8 @@ useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
         </label>
         <label class="control-row">
           <span class="control-label">Secondary hue <output>{{ playgroundSecondaryHue }}</output></span>
-          <input v-model.number="playgroundSecondaryHue" type="range" min="0" max="360" step="1" aria-label="Secondary hue" />
+          <input v-model.number="playgroundSecondaryHue" type="range" min="0" max="360" step="1"
+            aria-label="Secondary hue" />
         </label>
         <label class="control-row">
           <span class="control-label">Intensity <output>{{ playgroundIntensity }}</output></span>
@@ -157,7 +151,8 @@ useHoverPreview(playgroundOrbEl, playgroundHoverEnv, { seed: cards.length });
         </label>
         <label class="control-row">
           <span class="control-label">Excitement <output>{{ playgroundExcitement }}</output></span>
-          <input v-model.number="playgroundExcitement" type="range" min="0" max="2" step="0.05" aria-label="Excitement" />
+          <input v-model.number="playgroundExcitement" type="range" min="0" max="2" step="0.05"
+            aria-label="Excitement" />
         </label>
         <label class="control-row">
           <span class="control-label">Warp <output>{{ playgroundWarp }}</output></span>
@@ -187,7 +182,9 @@ import { GlowOrb } from 'glow-orb-vue';
 &lt;template&gt;
   &lt;GlowOrb :size="160" :hue="265" :hue-shift="0.15" /&gt;
 &lt;/template&gt;</code></pre>
-    <p>CSS is imported automatically when using a bundler (Vite, webpack, Rollup). If you're loading the package without one (a CDN or import map), add a <code>&lt;link rel="stylesheet"&gt;</code> to <code>dist/glow-orb-vue.css</code> instead.</p>
+    <p>CSS is imported automatically when using a bundler (Vite, webpack, Rollup). If you're loading the package without
+      one (a CDN or import map), add a <code>&lt;link rel="stylesheet"&gt;</code> to <code>dist/glow-orb-vue.css</code>
+      instead.</p>
 
     <h3>Props</h3>
     <table>
@@ -282,7 +279,7 @@ import { GlowOrb } from 'glow-orb-vue';
  */
 .intro {
   width: 100%;
-  max-width: 720px;
+  max-width: 960px;
   margin-bottom: 40px;
   color: #fbfbff;
 }
@@ -295,6 +292,7 @@ import { GlowOrb } from 'glow-orb-vue';
   margin: 0;
   color: rgba(255, 255, 255, 0.72);
   line-height: 1.6;
+  margin-bottom: 1.2em;
 }
 
 .glow-card {
@@ -319,6 +317,7 @@ import { GlowOrb } from 'glow-orb-vue';
     transform 0.45s cubic-bezier(0.34, 1.4, 0.4, 1),
     filter 0.45s ease;
 }
+
 .glow-card:hover .orb-stage,
 .glow-card:focus-visible .orb-stage {
   transform: scale(1.08);
@@ -335,6 +334,7 @@ import { GlowOrb } from 'glow-orb-vue';
   pointer-events: none;
   z-index: 0;
 }
+
 .glow-card .ground-pool {
   position: absolute;
   inset: 0;
@@ -344,15 +344,14 @@ import { GlowOrb } from 'glow-orb-vue';
   height: 150%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in srgb, var(--brand-glow) 55%, transparent) 0%,
-    color-mix(in srgb, var(--brand-mid) 28%, transparent) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--brand-glow) 55%, transparent) 0%,
+      color-mix(in srgb, var(--brand-mid) 28%, transparent) 40%,
+      transparent 70%);
   filter: blur(7px);
   opacity: 0.85;
 }
+
 .glow-card .ground-contact {
   position: absolute;
   left: 50%;
@@ -361,12 +360,10 @@ import { GlowOrb } from 'glow-orb-vue';
   height: 42%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 38%,
-    transparent 72%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 38%,
+      transparent 72%);
   filter: blur(1px);
 }
 
@@ -384,6 +381,7 @@ import { GlowOrb } from 'glow-orb-vue';
   border-radius: 10px;
   transition: background 0.35s ease, border-color 0.35s ease;
 }
+
 .glow-card:hover .plate,
 .glow-card:focus-visible .plate {
   background: #2a2a32;
@@ -429,6 +427,7 @@ import { GlowOrb } from 'glow-orb-vue';
   max-width: 960px;
   color: #fbfbff;
 }
+
 .playground {
   width: 100%;
   max-width: 960px;
@@ -547,6 +546,7 @@ import { GlowOrb } from 'glow-orb-vue';
     min-width: 720px;
   }
 }
+
 .glow-card:hover .cta,
 .glow-card:focus-visible .cta {
   opacity: 1;

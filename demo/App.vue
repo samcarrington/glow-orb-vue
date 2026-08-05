@@ -88,6 +88,105 @@ cards.forEach((_, i) => {
     </div>
     <span class="cta">Click to Talk</span>
   </button>
+
+  <section class="usage" aria-labelledby="usage-heading">
+    <h1 id="usage-heading">Usage</h1>
+    <p>Install the package:</p>
+    <pre><code>pnpm add glow-orb-vue</code></pre>
+    <p>Use the component:</p>
+    <pre><code>&lt;script setup lang="ts"&gt;
+import { GlowOrb } from 'glow-orb-vue';
+import 'glow-orb-vue/style.css';
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;GlowOrb :size="160" :hue="265" :hue-shift="0.15" /&gt;
+&lt;/template&gt;</code></pre>
+
+    <h2>Props</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Prop</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>size</td>
+          <td>number</td>
+          <td>132</td>
+          <td>Orb diameter in pixels.</td>
+        </tr>
+        <tr>
+          <td>shades</td>
+          <td>[string, string, string]</td>
+          <td>—</td>
+          <td>Three explicit CSS colours. Takes precedence over hue values.</td>
+        </tr>
+        <tr>
+          <td>hue</td>
+          <td>number</td>
+          <td>265</td>
+          <td>Base hue from 0-360.</td>
+        </tr>
+        <tr>
+          <td>secondaryHue</td>
+          <td>number</td>
+          <td>hue + 35</td>
+          <td>Hue used for the second blob.</td>
+        </tr>
+        <tr>
+          <td>intensity</td>
+          <td>number</td>
+          <td>0.5</td>
+          <td>Colour lightness and chroma movement, from 0-1.</td>
+        </tr>
+        <tr>
+          <td>hueShift</td>
+          <td>number</td>
+          <td>0</td>
+          <td>Slow hue drift, from 0-1.</td>
+        </tr>
+        <tr>
+          <td>glow</td>
+          <td>string</td>
+          <td>derived</td>
+          <td>CSS colour used by the outer glow.</td>
+        </tr>
+        <tr>
+          <td>excitement</td>
+          <td>number</td>
+          <td>1</td>
+          <td>Motion speed and position/scale amplitude.</td>
+        </tr>
+        <tr>
+          <td>warp</td>
+          <td>number</td>
+          <td>1</td>
+          <td>Shape and rotation contortion depth.</td>
+        </tr>
+        <tr>
+          <td>phase</td>
+          <td>number</td>
+          <td>0.09</td>
+          <td>Per-blob desynchronisation in seconds.</td>
+        </tr>
+        <tr>
+          <td>env</td>
+          <td>number</td>
+          <td>0</td>
+          <td>Additional live energy, from 0-1.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="usage-note">
+      Values outside stated 0-1 ranges are clamped where applicable; the component respects
+      <code>prefers-reduced-motion</code>.
+    </p>
+  </section>
 </template>
 
 <style scoped>
@@ -205,6 +304,69 @@ cards.forEach((_, i) => {
   transition:
     opacity 0.35s ease,
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:global(#app) {
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 64px 16px;
+}
+
+.usage {
+  flex: 0 0 100%;
+  max-width: 960px;
+  color: #fbfbff;
+}
+
+.usage h1,
+.usage h2 {
+  margin: 0 0 16px;
+}
+
+.usage p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.usage pre {
+  overflow-x: auto;
+  margin: 12px 0 28px;
+  padding: 16px;
+  background: #16161d;
+  border: 1px solid #3a3a44;
+  border-radius: 8px;
+  color: #d9d7ff;
+}
+
+.usage table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.usage th,
+.usage td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #3a3a44;
+  vertical-align: top;
+}
+
+.usage th {
+  color: #fbfbff;
+}
+
+.usage-note {
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .usage {
+    overflow-x: auto;
+  }
+
+  .usage table {
+    min-width: 720px;
+  }
 }
 .glow-card:hover .cta,
 .glow-card:focus-visible .cta {

@@ -3,5 +3,6 @@
 .claude/
 .dialogue/
 node_modules/
+dist-demo/
 *.tsbuildinfo
 .pnpm-store/

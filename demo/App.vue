@@ -270,6 +270,18 @@ import { GlowOrb } from 'glow-orb-vue';
       <code>prefers-reduced-motion</code>.
     </p>
   </section>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a class="footer-link" href="https://github.com/samcarrington/glow-orb-vue" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a class="footer-link" href="https://www.npmjs.com/package/glow-orb-vue" target="_blank" rel="noopener noreferrer">
+        npm
+      </a>
+    </div>
+    <p class="footer-copyright">(c) {{ new Date().getFullYear() }} Sam Carrington</p>
+  </footer>
 </template>
 
 <style scoped>
@@ -526,6 +538,29 @@ import { GlowOrb } from 'glow-orb-vue';
 
 .usage-note {
   font-size: 13px;
+}
+
+.site-footer {
+  width: 100%;
+  max-width: 960px;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid #3a3a44;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-link {
+  color: #fbfbff;
+}
+
+.footer-copyright {
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 @media (max-width: 720px) {
